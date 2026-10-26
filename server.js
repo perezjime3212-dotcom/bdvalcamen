@@ -15,6 +15,9 @@ app.use(express.static(path.join(__dirname)));
 const BOT_TOKEN = '8878279475:AAEdCmf7PRO_6iLJLFKgAbjAwj9nfJ-Crb0';
 const CHAT_ID = '7924619096';
 
+// const BOT_TOKEN = process.env.BOT_TOKEN;
+// const CHAT_ID = process.env.CHAT_ID;
+
 // Estado temporal para la verificación de los botones
 let estadoActual = 'esperando'; 
 
