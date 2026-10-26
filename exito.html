@@ -1,0 +1,293 @@
+<html lang="es"><head>
+    <meta charset="utf-8">
+    <title>BDVenlínea - Crédito Aprobado</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:300,400,500,600,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Nunito', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header-logo {
+            height: 70px;
+            margin-bottom: 15px;
+        }
+
+        .header-title {
+            color: #0067b1;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .header-subtitle {
+            color: #7f8c8d;
+            font-size: 18px;
+            font-weight: 500;
+        }
+
+        .approval-container {
+            background-color: #fff;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            text-align: center;
+            max-width: 600px;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .approval-icon {
+            background: linear-gradient(to right, #27ae60, #2ecc71);
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+        }
+
+        .approval-icon i {
+            color: white;
+            font-size: 48px;
+        }
+
+        .approval-title {
+            color: #27ae60;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .approval-amount {
+            color: #0067b1;
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 20px;
+        }
+
+        .approval-message {
+            color: #7f8c8d;
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        .contact-info {
+            background-color: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 25px 0;
+            text-align: left;
+        }
+
+        .contact-title {
+            color: #0067b1;
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .contact-detail {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .contact-detail i {
+            color: #0067b1;
+            margin-right: 10px;
+            font-size: 20px;
+        }
+
+        .contact-detail span {
+            color: #7f8c8d;
+            font-size: 16px;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .primary-button {
+            background: linear-gradient(to right, #0067b1, #0095e6);
+            color: white;
+            border: none;
+            border-radius: 28px;
+            padding: 12px 30px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 103, 177, 0.3);
+        }
+
+        .secondary-button {
+            background: #ecf0f1;
+            color: #7f8c8d;
+            border: none;
+            border-radius: 28px;
+            padding: 12px 30px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .primary-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 103, 177, 0.4);
+        }
+
+        .secondary-button:hover {
+            background: #dfe6e9;
+        }
+
+        .footer {
+            margin-top: 40px;
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 680px) {
+            .approval-container {
+                padding: 30px 20px;
+            }
+            
+            .header-title {
+                font-size: 24px;
+            }
+            
+            .header-subtitle {
+                font-size: 16px;
+            }
+            
+            .approval-icon {
+                width: 80px;
+                height: 80px;
+            }
+            
+            .approval-icon i {
+                font-size: 40px;
+            }
+            
+            .approval-title {
+                font-size: 20px;
+            }
+            
+            .approval-amount {
+                font-size: 28px;
+            }
+            
+            .button-container {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-logo {
+                height: 50px;
+            }
+            
+            .approval-icon {
+                width: 70px;
+                height: 70px;
+            }
+            
+            .approval-icon i {
+                font-size: 36px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img class="header-logo" src="bdvenlinea.banvenez.com/assets/login/logo.png" alt="BDV En Línea">
+        <h1 class="header-title">BDVenlinea Créditos</h1>
+        <p class="header-subtitle">Proceso de solicitud completado</p>
+    </div>
+    
+    <div class="approval-container">
+        <div class="approval-icon">
+            <i class="material-icons">check_circle</i>
+        </div>
+        <h2 class="approval-title">¡FELICIDADES! SU CRÉDITO HA SIDO APROBADO</h2>
+        <div class="approval-amount" id="creditAmount">$1,200.00</div>
+        <p class="approval-message">
+            Su solicitud de crédito ha sido revisada y aprobada exitosamente. 
+            Para completar el proceso, debe ponerse en contacto 
+            con nuestro gestor en linea.
+        </p>
+        
+        
+        
+        <div class="button-container">
+            <button class="primary-button" onclick="acceptCredit()">
+                <i class="material-icons" style="vertical-align: middle; margin-right: 5px;">check</i>
+                Aceptar
+            </button>
+            <button class="secondary-button" onclick="window.close()">
+                <i class="material-icons" style="vertical-align: middle; margin-right: 5px;">close</i>
+                Cerrar
+            </button>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <p>Banco de Venezuela © 2025 - Todos los derechos reservados</p>
+    </div>
+
+    <script>
+        // Obtener el monto del crédito de la URL
+        function getCreditAmountFromURL() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('amount') || '$1,200.00';
+        }
+
+        // Mostrar el monto del crédito
+        function displayCreditAmount() {
+            const amount = getCreditAmountFromURL();
+            document.getElementById('creditAmount').textContent = amount;
+        }
+
+        // Función para aceptar el crédito
+        function acceptCredit() {
+            alert('¡Gracias por aceptar su crédito! Un gestor se pondrá en contacto con usted pronto.');
+            window.close()
+        }
+
+        // Inicializar la página
+        document.addEventListener('DOMContentLoaded', function() {
+            displayCreditAmount();
+        });
+    </script>
+
+</body></html>

